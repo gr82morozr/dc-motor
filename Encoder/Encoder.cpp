@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include <Encoder.h>
+#include <Encoder/Encoder.h>
 #include <Common/Common.h>
 
 int Encoder::unit_channel_in_use = 0;
