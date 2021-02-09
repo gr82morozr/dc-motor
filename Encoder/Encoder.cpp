@@ -76,8 +76,10 @@ void Encoder::reset() {
 };
 
 long Encoder::read_count() {
-  return 
+  return (this->count);
 }
+
+
 
 void Encoder::get_next_unit_channel(pcnt_unit_t *unit, pcnt_channel_t *channel) {
   if ( Encoder::unit_channel_in_use >=0 && Encoder::unit_channel_in_use <7 ) {
