@@ -40,8 +40,8 @@
 
 class Encoder {
   public:
-    Encoder(int pinA, int pinB);
-    Encoder(int unit, int channel, int pinA, int pinB, int resolution);
+    Encoder(int pulse_pin, int ctrl_pin);
+    Encoder(int unit, int channel, int pulse_pin, int ctrl_pin, int resolution);
     void    init();
     void    read(long *count, float *rate);
     long    read_count();
@@ -52,8 +52,8 @@ class Encoder {
   private :
     pcnt_unit_t       unit ;
     pcnt_channel_t    channel;
-    gpio_num_t        pinA ;
-    gpio_num_t        pinB ;
+    gpio_num_t        pulse_pin ;
+    gpio_num_t        ctrl_pin ;
     pcnt_config_t     config;  
     int               resolution ;
     long              timer       = micros();

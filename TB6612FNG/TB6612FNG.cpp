@@ -1,20 +1,7 @@
 #include <Arduino.h>
-#include <ESP32PWM.h>
+#include <Common/Common.h> 
 #include <TB6612FNG/TB6612FNG.h>
 
-
-/*************************************************
- * 
- *  Common math functions
- * 
- ************************************************/
-int sign(float x) {
-  return ((x > 0) ? 1 : ((x < 0) ? -1 : 0));
-};
-
-//float abs(float x) {
-//   return ((x > 0) ? x : ((x < 0) ? -x : 0));
-//};
 
 /*************************************************
  * 
@@ -22,14 +9,14 @@ int sign(float x) {
  * 
  ************************************************/
 
-TB6612FNG_Driver::TB6612FNG_Driver(TB6612FNGConfig s) {
-  this->config = s;
+TB6612FNG::TB6612FNG(TB6612FNG_Config c) {
+  this->config = c;
   // PWM config
   this->pwm = new ESP32PWM(
-    this->config.channel, 
     this->config.pwm_pin,
+    this->config.pwm_channel, 
     this->config.pwm_freq,
-    this->config.pwm_resolution_bits,
+    this->config.pwm_resolution,
     0
   );
 };
@@ -37,7 +24,7 @@ TB6612FNG_Driver::TB6612FNG_Driver(TB6612FNGConfig s) {
 
 
 
-void TB6612FNG_Driver::init(void) {
+void TB6612FNG::init(void) {
   pinMode(this->config.standby_pin, OUTPUT);
   pinMode(this->config.in1_pin, OUTPUT);
   pinMode(this->config.in2_pin, OUTPUT);
@@ -47,7 +34,7 @@ void TB6612FNG_Driver::init(void) {
 
 };
 
-void TB6612FNG_Driver::run(float speed) {
+void TB6612FNG::run(float speed) {
   this->speed = speed;
 
   // cap the value of speed (max = 1)
@@ -56,7 +43,7 @@ void TB6612FNG_Driver::run(float speed) {
   };
 
   // debug info
-  if (TB6612FNG_DEBUG == 1) {
+  if (_TB6612FNG_DEBUG_) {
     Serial.println("standby_pin:" + String(this->config.standby_pin));
     Serial.println("in1_pin:" + String(this->config.in1_pin));
     Serial.println("in2_pin:" + String(this->config.in2_pin));
@@ -69,7 +56,7 @@ void TB6612FNG_Driver::run(float speed) {
   this->pwm->run(abs(this->speed));
 };
 
-void TB6612FNG_Driver::direct() {
+void TB6612FNG::direct() {
   switch(sign(this->speed)) {
     case 1 :
       digitalWrite(this->config.in1_pin, HIGH);
@@ -85,12 +72,12 @@ void TB6612FNG_Driver::direct() {
   };
 };
 
-void TB6612FNG_Driver::brake(void) {
+void TB6612FNG::brake(void) {
   digitalWrite(this->config.in1_pin, HIGH);
   digitalWrite(this->config.in2_pin, HIGH);
   this->stop();
 };
 
-void TB6612FNG_Driver::stop(void) {
+void TB6612FNG::stop(void) {
   digitalWrite(this->config.standby_pin, LOW);
 };

@@ -1,40 +1,41 @@
 #include <Arduino.h>
-#include <Encoder/Encoder.h>
 #include <Common/Common.h>
+#include <Encoder/Encoder.h>
+
 
 int Encoder::unit_channel_in_use = 0;
 
-Encoder::Encoder(int pinA, int pinB) {
+Encoder::Encoder(int pulse_pin, int ctrl_pin) {
   this->get_next_unit_channel(&this->unit, &this->channel);
-  this->pinA          = (gpio_num_t) pinA;   // Pulse pin
-  this->pinB          = (gpio_num_t) pinB;   // Control pin
+  this->pulse_pin     = (gpio_num_t) pulse_pin;   // Pulse pin
+  this->ctrl_pin      = (gpio_num_t) ctrl_pin;   // Control pin
   this->resolution    = _DEFAULT_RESOLUTION_;
 };
 
-Encoder::Encoder(int unit, int channel, int pinA, int pinB, int resolution) {
+Encoder::Encoder(int unit, int channel, int pulse_pin, int ctrl_pin, int resolution) {
   this->unit          = (pcnt_unit_t) unit;
   this->channel       = (pcnt_channel_t) channel;
-  this->pinA          = (gpio_num_t) pinA;   // Pulse pin
-  this->pinB          = (gpio_num_t) pinB;   // Control pin
+  this->pulse_pin     = (gpio_num_t) pulse_pin;   // Pulse pin
+  this->ctrl_pin      = (gpio_num_t) ctrl_pin;    // Control pin
   this->resolution    = resolution;
 };
 
 void Encoder::init() {
-    gpio_pad_select_gpio(this->pinA);
-    gpio_pad_select_gpio(this->pinB);
-    gpio_set_direction(this->pinA, GPIO_MODE_INPUT);
-    gpio_set_direction(this->pinB, GPIO_MODE_INPUT);
-    gpio_pulldown_en( this->pinA);
-    gpio_pulldown_en(this->pinB);
+    gpio_pad_select_gpio(this->pulse_pin);
+    gpio_pad_select_gpio(this->ctrl_pin);
+    gpio_set_direction(this->pulse_pin, GPIO_MODE_INPUT);
+    gpio_set_direction(this->ctrl_pin, GPIO_MODE_INPUT);
+    gpio_pulldown_en( this->pulse_pin);
+    gpio_pulldown_en(this->ctrl_pin);
 
-    this->config.pulse_gpio_num = this->pinA;     // Pulse PIN
-	  this->config.ctrl_gpio_num  = this->pinB;     // Control PIN
+    this->config.pulse_gpio_num = this->pulse_pin;     // Pulse PIN
+	  this->config.ctrl_gpio_num  = this->ctrl_pin;     // Control PIN
 	  this->config.unit           = this->unit;
 	  this->config.channel        = this->channel;
-	  this->config.pos_mode       = PCNT_COUNT_DIS; //Count Only On Rising-Edges
-	  this->config.neg_mode       = PCNT_COUNT_INC; // Discard Falling-Edge
-	  this->config.lctrl_mode     = PCNT_MODE_KEEP; // Rising A on HIGH B = CW Step
-	  this->config.hctrl_mode     = PCNT_MODE_REVERSE; // Rising A on LOW B = CCW Step
+	  this->config.pos_mode       = PCNT_COUNT_DIS;     //Count Only On Rising-Edges
+	  this->config.neg_mode       = PCNT_COUNT_INC;     // Discard Falling-Edge
+	  this->config.lctrl_mode     = PCNT_MODE_KEEP;     // Rising A on HIGH B = CW Step
+	  this->config.hctrl_mode     = PCNT_MODE_REVERSE;  // Rising A on LOW B = CCW Step
 	  this->config.counter_h_lim  = INT16_MAX;
 	  this->config.counter_l_lim  = INT16_MIN ;
 
