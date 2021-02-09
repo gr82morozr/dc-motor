@@ -1,0 +1,15 @@
+{
+  "name": "DC Motor",
+  "version": "0.0.1",
+  "keywords": [
+    "dc motor"
+  ],
+  "description": "DC motor drivers and utilities.",
+  "repository":
+  {
+      "type": "git",
+      "url": "https://github.com/gr82morozr/dc-motor"
+  },
+  "frameworks": "arduino",
+  "platforms": "*"
+}

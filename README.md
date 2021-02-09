@@ -1,2 +1,3 @@
-# dc-motor
-A collection of drivers, utilities for DC motors
+## DC Motor Encoder
+
+Read DC motor encoder by pulse counter
