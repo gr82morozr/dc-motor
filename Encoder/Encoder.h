@@ -4,7 +4,7 @@
 
 #define _ENCODER_DEBUG_       1
 #define _ENCODER_FILTER_      200
-#define _DEFAULT_RESOLUTION_  15000
+#define _DEFAULT_RESOLUTION   15000 
 
 
 /*
@@ -37,17 +37,16 @@
 */
 
 
-
 class Encoder {
   public:
     Encoder(int pulse_pin, int ctrl_pin);
+    Encoder(int pulse_pin, int ctrl_pin, int resolution);
     Encoder(int unit, int channel, int pulse_pin, int ctrl_pin, int resolution);
     void    init();
     void    read(long *count, float *rate);
     long    read_count();
     float   read_rate();
-    void    reset();
-    static  int       unit_channel_in_use;
+    void    clear();
 
   private :
     pcnt_unit_t       unit ;
@@ -60,7 +59,7 @@ class Encoder {
     int16_t           int_count   = 0;
     long              count       = 0;
     float             rate        = 0.0; 
+    static  int       unit_channel_in_use;
     static void       get_next_unit_channel(pcnt_unit_t *unit, pcnt_channel_t *channel);
-   
-   
+    void              debug();
 };
