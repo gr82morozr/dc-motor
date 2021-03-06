@@ -15,7 +15,7 @@
   //    Sample code:
   // ========================================================
   long count;
-  float speed;
+  double speed;
   Encoder encoder=Encoder(32, 35);
   // --- or ---
   // Encoder encoder=Encoder(1, 0, 32, 35, 15000);
@@ -43,9 +43,9 @@ class Encoder {
     Encoder(int pulse_pin, int ctrl_pin, int resolution);
     Encoder(int unit, int channel, int pulse_pin, int ctrl_pin, int resolution);
     void    init();
-    void    read(long *count, float *rate);
+    void    read(long *count, double *rate);
     long    read_count();
-    float   read_rate();
+    double   read_rate();
     void    clear();
 
   private :
@@ -58,7 +58,7 @@ class Encoder {
     long              timer       = micros();
     int16_t           int_count   = 0;
     long              count       = 0;
-    float             rate        = 0.0; 
+    double             rate        = 0.0; 
     static  int       unit_channel_in_use;
     static void       get_next_unit_channel(pcnt_unit_t *unit, pcnt_channel_t *channel);
     void              debug();

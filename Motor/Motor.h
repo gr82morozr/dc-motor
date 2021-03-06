@@ -3,6 +3,8 @@
 #include <PWM/ESP32PWM.h>
 #include <Encoder/Encoder.h>
 #include <TB6612FNG/TB6612FNG.h>
+#include <PIDController/PIDController.h>
+
 
 #define _MOTOR_DEBUG        1
 #define _MOTOR_TRACE        1
@@ -33,20 +35,25 @@ class Motor {
     Motor(MotorConfig cfg);
     void init();
     void init(MotorConfig cfg);
-    void run(float speed_rate); // -1 <= speed_rate<= 1 
+    
+    void run(double speed_rate);   // -1 <= speed_rate<= 1 , relative speed, not acturate
+    void drive(double speed);      // run at acturate speed
+    void rotate(double degrees);   // rotate acturate degrees
     void stop();
-    void read(long *rcount, float *speed);
+
+
+    void read(long *rcount, double *speed);
     void clear();
     void test();
     void set(MotorConfig cfg);
-    MotorConfig  get();
+    MotorConfig get();
     
   private :
     MotorConfig   config        ;
     TB6612FNG     *driver       ;
     Encoder       *encoder      ;
-    float         max_speed     ; 
-    float         target_speed  ;
+    double         max_speed     ; 
+    double         target_speed  ;
     void          debug()       ;
     void          trace()       ;
 };

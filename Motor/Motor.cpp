@@ -40,15 +40,36 @@ MotorConfig  Motor::get() {
 };
 
 
-void Motor::run(float speed_rate) {
+void Motor::run(double speed_rate) {
   this->driver->run(speed_rate);
 };
+
+
+void drive(double speed) {
+  // run at acturate speed
+
+
+
+
+
+};
+
+      
+void rotate(double degrees){
+  // rotate acturate degrees
+
+
+
+
+
+}   
+
 
 void Motor::stop() {
   this->driver->stop();
 };
 
-void Motor::read(long *rcount, float *speed) {
+void Motor::read(long *rcount, double *speed) {
   this->encoder->read(rcount, speed);
   *speed = *speed / this->config.encoder_resolution;
 };
@@ -59,7 +80,7 @@ void Motor::clear() {
 
 
 void Motor::test() {
-  for (float s = -1; s <=1; s+=0.1) {
+  for (double s = -1; s <=1; s+=0.1) {
     this->driver->run(s);
     delay(200);
   };

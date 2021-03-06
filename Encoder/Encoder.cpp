@@ -67,11 +67,11 @@ void Encoder::init() {
   };
 };
 
-void Encoder::read(long *count, float *rate) {
+void Encoder::read(long *count, double *rate) {
     pcnt_get_counter_value(this->unit, &this->int_count);
     pcnt_counter_clear(this->unit);
     this->count += (long) this->int_count;
-    this->rate  = (float) ((this->int_count) /  (float)(micros() - timer) * 1000000.0 ) ;
+    this->rate  = (double) ((this->int_count) /  (double)(micros() - timer) * 1000000.0 ) ;
     timer = micros();      
     *count = this->count;
     *rate  = this->rate;
